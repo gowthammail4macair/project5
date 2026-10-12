@@ -171,5 +171,71 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
+  },
+  "parameters": {
+    "AMPLIFY_function_ticketAuthorizer_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketAuthorizer"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketAuthorizer_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketAuthorizer"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketRest_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketRest"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketRest_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketRest"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketSocketHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketSocketHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketSocketHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketSocketHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketWorkflow_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketWorkflow"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketWorkflow_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketWorkflow"
+        }
+      ]
+    }
   }
 }
