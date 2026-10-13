@@ -1,40 +1,37 @@
 {
-  "name": "amplify-gen1-fullstack",
+  "name": "project5",
   "version": "1.0.0",
   "private": true,
-  "description": "Amplify Gen 1 support-ticket full-stack application: REST, AppSync and WebSocket APIs",
+  "description": "Project5 repaired managed Gen2 migration baseline from Gen1 pftest",
   "scripts": {
     "test": "node --test test/*.test.cjs",
     "typecheck": "tsc --noEmit",
-    "validate": "npm run prepare && npm run typecheck && npm test && tsx scripts/synth.ts",
-    "amplify": "amplify",
-    "prepare": "node scripts/prepare-local.cjs",
+    "synth": "node --import tsx scripts/project5-synth.ts managed",
+    "validate": "npm run typecheck && npm test && npm run synth",
     "frontend:build": "node scripts/build-frontend.cjs",
-    "hosting:prepare": "node scripts/hosting.cjs prepare",
-    "frontend:deploy": "npm run frontend:build && node scripts/hosting.cjs publish"
+    "postinstall": "node scripts/patch-amplify-import.cjs"
   },
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
     "@aws-sdk/client-apigatewaymanagementapi": "^3.0.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.1000.0",
     "@aws-sdk/client-dynamodb": "^3.0.0",
     "@aws-sdk/lib-dynamodb": "^3.0.0",
-    "aws-jwt-verify": "5.2.1",
-    "@aws-sdk/client-cognito-identity-provider": "^3.1000.0"
+    "aws-jwt-verify": "5.2.1"
   },
   "devDependencies": {
-    "@aws-amplify/cli-extensibility-helper": "3.0.43",
-    "@aws-amplify/cli-internal": "14.5.1",
+    "@aws-amplify/amplify-appsync-simulator": "2.16.20",
+    "@aws-amplify/backend": "1.25.1",
+    "@aws-amplify/backend-cli": "1.10.0",
     "@types/node": "^22.0.0",
-    "amazon-cognito-identity-js": "^6.3.16",
-    "aws-cdk-lib": "^2.0.0",
-    "constructs": "^10.0.0",
+    "amazon-cognito-identity-js": "6.3.16",
+    "aws-cdk-lib": "2.272.0",
+    "constructs": "10.8.1",
     "esbuild": "0.28.2",
-    "tsx": "^4.0.0",
-    "typescript": "^5.0.0"
-  },
-  "overrides": {
-    "graphql": "15.10.3"
+    "graphql": "15.10.3",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3"
   }
 }

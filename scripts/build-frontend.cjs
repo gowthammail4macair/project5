@@ -3,9 +3,10 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const esbuild = require('esbuild');
 const deployment = require('../deployment.json');
-const labels={ 'amplify-gen1-fullstack':'Amplify Gen 1', 'amplify-gen2-fullstack':'Native Gen 2', 'amplify-gen1-to-gen2-migration':'Migrated Gen 2' };
+const labels={ 'project5':'Project5 Gen2', 'amplify-gen1-fullstack':'Amplify Gen 1', 'amplify-gen2-fullstack':'Native Gen 2', 'amplify-gen1-to-gen2-migration':'Migrated Gen 2' };
 async function main() {
-  const file=fs.existsSync('amplify_outputs.json')?'amplify_outputs.json':'evidence/deployed-outputs.json';
+  const file=process.env.PROJECT5_BUILD_OUTPUTS || 'amplify_outputs.json';
+  if(!fs.existsSync(file)) throw new Error('Provide outputs from Project5; copied Gen1 evidence is not a build source.');
   if(process.env.CI && file!=='amplify_outputs.json')throw new Error('CI must build with outputs exported by this deployment.');
   const outputs=JSON.parse(fs.readFileSync(file));
   const name=require('../package.json').name;

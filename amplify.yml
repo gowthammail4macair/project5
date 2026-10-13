@@ -1,0 +1,18 @@
+version: 1
+# Step 8 intentionally does not deploy. Replace backend commands only after the
+# reference QA adaptation and deployment plan have been reviewed.
+backend:
+  phases:
+    build:
+      commands:
+        - npm ci
+        - npm run validate
+frontend:
+  phases:
+    build:
+      commands:
+        - npm run frontend:build
+  artifacts:
+    baseDirectory: frontend/dist
+    files:
+      - '**/*'

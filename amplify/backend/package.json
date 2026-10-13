@@ -1,5 +1,0 @@
-{
-  "name": "gen1-backend-overrides",
-  "private": true,
-  "description": "Override builds use pinned dependencies installed by npm ci at the repository root."
-}

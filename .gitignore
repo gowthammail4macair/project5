@@ -11,11 +11,9 @@ amplify/backend/**/build/
 .env
 .env.*
 !.env.example
-
 # Offline snapshots retained locally; never deployed or published.
 amplify/**/*offline-backup*
 amplify/#current-cloud-backend*
-
 # Downloaded CI artifacts; selected evidence is copied to evidence/*.json.
 evidence/cloud-ci*/
 # CLI init regenerates these documentation, type and sample files.
@@ -23,28 +21,12 @@ amplify/README.md
 amplify/backend/types/amplify-dependent-resources-ref.d.ts
 amplify/hooks/README.md
 amplify/hooks/*.sample
-
 # Frontend assets are generated from deployed backend outputs.
 frontend/dist/
+amplify_outputs*
+amplifyconfiguration*
+aws-exports*
 
-#amplify-do-not-edit-begin
-amplify/\#current-cloud-backend
-amplify/.config/local-*
-amplify/logs
-amplify/mock-data
-amplify/mock-api-resources
-amplify/backend/amplify-meta.json
-amplify/backend/.temp
-build/
-dist/
-node_modules/
-aws-exports.js
-awsconfiguration.json
-amplifyconfiguration.json
-amplifyconfiguration.dart
-amplify-build-config.json
-amplify-gradle-config.json
-amplifytools.xcconfig
-.secret-*
-**.sample
-#amplify-do-not-edit-end
+.project5-private/
+amplify_outputs*.json
+.env.project5.local

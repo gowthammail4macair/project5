@@ -1,17 +1,25 @@
 {
   "compilerOptions": {
     "target": "es2022",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "es2022",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
     "skipLibCheck": true,
-    "strict": true
+    "allowJs": true,
+    "checkJs": false,
+    "types": [
+      "node"
+    ]
   },
   "include": [
-    "amplify/backend/**/*.ts",
+    "amplify/**/*.ts",
     "scripts/**/*.ts"
   ],
   "exclude": [
-    "**/build/**"
+    "node_modules",
+    "dist",
+    "scripts/gen1-archive"
   ]
 }

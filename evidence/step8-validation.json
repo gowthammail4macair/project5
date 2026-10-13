@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "recordedAt": "2026-10-13T16:03:04.364372+00:00",
+  "phase": "Step 8: repaired managed Gen2 baseline",
+  "sourceEnvironment": "pftest",
+  "destinationBranch": "main",
+  "sourceCheckoutHead": "7296daf656d972eb5780c454f29eff25179e898c",
+  "nodeVersion": "v24.16.0",
+  "npmVersion": "11.13.0",
+  "checks": {
+    "freshNpmCi": {
+      "status": "passed",
+      "mode": "offline cache",
+      "postinstallPatch": "applied"
+    },
+    "typecheck": {
+      "status": "passed",
+      "command": "npm run typecheck"
+    },
+    "tests": {
+      "status": "passed",
+      "command": "npm test",
+      "passed": 39,
+      "failed": 0
+    },
+    "managedSynthesis": {
+      "status": "passed",
+      "command": "npm run synth",
+      "record": "evidence/synthesis.json"
+    },
+    "frontendBuild": {
+      "status": "passed",
+      "command": "PROJECT5_BUILD_OUTPUTS=.project5-private/offline-frontend-outputs.json npm run frontend:build",
+      "scope": "offline sample outputs; no deployed-backend connectivity check"
+    }
+  },
+  "limits": [
+    "Local checks ran on Node 24.16.0, targeting Lambda Node 22; Node 22 CI has not run.",
+    "No AWS deployment, ownership transfer, stack unlock, frontend publish or Git push was performed.",
+    "Managed auth and Connections definitions remain for baseline planning; Step 9 reference QA is not yet implemented.",
+    "Source GraphQL root-field/owner-update warnings remain; live authorization checks are outstanding."
+  ],
+  "sha256": {
+    "package.json": "9b8d2730676b3a09b294cd07154d14cb675c4f77126166e50abfcb6ffbaad775",
+    "package-lock.json": "f72cd4f8c8080fd28de815d4e0026122b0b830d3e71c8f1c5deaee86eddb7c1f",
+    "amplify/backend.ts": "9eb45652e6efd51bec1f505c96fc89bc5ab74ff618fd443e7743fa23f810e144",
+    "amplify/data/resource.ts": "5736bf66a2ca58a1df1202c64791380d6e110d08ce6d37a4b148e7734033177f",
+    "amplify/api/supportRest/resource.ts": "68e9294f01d9a75a7b06c7c8db87cd598b86bddd2d7d36c40cb2905328297626",
+    "amplify/manual-wiring.ts": "25667bd688c11281e670a5f6b4f8d0d08e0b0dd7482fed34869c20a681a3e292",
+    "scripts/patch-amplify-import.cjs": "63dc0eea1e9389e0c4092e44aa186b7f40fa1c847b9e9e32ad2b20ad37c5cbe2",
+    "scripts/project5-synth.ts": "40e5933b4df4d79550d7844b685633c5d26608e15ec312f28a0e886fcf1a3e9a"
+  }
+}

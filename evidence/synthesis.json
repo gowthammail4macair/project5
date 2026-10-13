@@ -1,28 +1,23 @@
 {
   "status": "passed",
-  "scope": "Official Gen 1 Auth and REST synthesis, CLI GraphQL compilation, custom CDK synthesis; no deployment",
-  "graphqlOperations": [
-    "createTicket",
-    "getTicket",
-    "listTickets",
-    "updateTicket",
-    "deleteTicket",
-    "ticketSummary",
-    "closeTicket",
-    "listTicketComments",
-    "addTicketComment"
+  "scope": "Local structure/selected-identity checks; no deployment",
+  "mode": "managed",
+  "appId": "dprojectfivepreview",
+  "branch": "main",
+  "directory": "dist/project5-managed.out",
+  "modelTables": [
+    "Ticket-yfs4rx4ynvgulalyky2k3zfrxi-pftest"
   ],
-  "restPaths": [
-    "/tickets",
-    "/tickets/{id}",
-    "/tickets/{id}/comments",
-    "/admin/tickets"
-  ],
-  "websocketRoutes": [
-    "$connect",
-    "$disconnect",
-    "$default",
-    "getTicket"
-  ],
-  "dependencyGraphAcyclic": true
+  "userPools": 1,
+  "userPoolClients": 2,
+  "nativeS3BucketsForReview": [
+    {
+      "file": "amplifydprojectfivepreviewmainbranch0086a67abadata35C00E48.nested.template.json",
+      "logicalId": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsBucket9CCB4ACA"
+    },
+    {
+      "file": "amplifydprojectfivepreviewmainbranch0086a67abadata35C00E48.nested.template.json",
+      "logicalId": "modelIntrospectionSchemaBucketF566B665"
+    }
+  ]
 }

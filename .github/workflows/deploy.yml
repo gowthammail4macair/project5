@@ -1,6 +1,5 @@
-# Gen1 infrastructure is locked after its stateful resources moved to Project3.
-# This repository validates the retained reference; Project3 publishes both sites.
-name: Validate preserved Gen1 reference
+# Step 8 validation only. Reference QA and deployment are separate reviewed phases.
+name: Validate Project5 Gen2 baseline
 on:
   push:
     branches: [main]
@@ -8,7 +7,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: gen1-reference-validation
+  group: project5-baseline-validation
   cancel-in-progress: false
 jobs:
   validate:
@@ -25,11 +24,11 @@ jobs:
           cache: npm
       - run: npm install --global npm@11.13.0
       - run: npm ci
-      - name: Validate the preserved Gen1 source
+      - name: Validate the managed Gen2 baseline
         run: npm run validate
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: gen1-reference-validation
+          name: project5-baseline-validation
           path: evidence/synthesis.json
           retention-days: 14
