@@ -104,6 +104,27 @@ async function main() {
       assert.equal((r as any).UpdateReplacePolicy,'Retain',r.Type);
     }
   }
+  if (mode === 'reference') {
+    const connectionArn = process.env.TEST_CONNECTIONS_TABLE_ARN!;
+    const sourceSocketId = process.env.TEST_SOURCE_WEBSOCKET_API_ID!;
+    assert.ok(serialized.includes(connectionArn), 'Connections must reference B');
+    assert.ok(serialized.includes(process.env.TEST_TICKET_STREAM_ARN!), 'Mapping must use current B stream');
+    assert.ok(serialized.includes(sourceSocketId), 'Callback grant must include B socket');
+    assert.ok(serialized.includes('Project5QaDenySharedTableManagement'), 'Missing table-manager deny');
+    const managers = ofType('AWS::IAM::Role').filter(r => r.logicalId.includes('AmplifyManagedTableOnEventRole') || r.logicalId.includes('AmplifyManagedTableIsCompleteRole'));
+    assert.equal(managers.length, 2);
+    for (const role of managers) {
+      const policy = role.Properties?.Policies.find((p: any) => p.PolicyName === 'Project5QaDenySharedTableManagement');
+      assert.ok(policy, role.logicalId);
+      const statements = policy.PolicyDocument.Statement;
+      const statement = statements.find((s: any) => s.Effect === 'Deny');
+      for (const action of ['dynamodb:CreateTable','dynamodb:DeleteTable','dynamodb:UpdateTable','dynamodb:UpdateTimeToLive','dynamodb:UpdateContinuousBackups','dynamodb:TagResource','dynamodb:UntagResource']) assert.ok(statement.Action.includes(action), action);
+      assert.ok(statement.Resource.includes(connectionArn));
+      assert.ok(statement.Resource.some((r: any) => JSON.stringify(r).includes('table/Ticket-yfs4rx4ynvgulalyky2k3zfrxi-pftest')), 'Guard must cover B Ticket table');
+    }
+    const stateWrite = ofType('AWS::IAM::Policy').flatMap(r => r.Properties?.PolicyDocument?.Statement ?? []);
+    assert.ok(!stateWrite.some((s: any) => s.Effect === 'Allow' && [].concat(s.Action).some((a: any) => /^cognito-idp:(Create|Update|Delete)/.test(a))), 'Cognito configuration writer in QA');
+  }
   const summary = {
     status: 'passed', scope: 'Local structure/selected-identity checks; no deployment',
     mode, appId, branch, directory: assembly.directory,

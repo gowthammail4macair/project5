@@ -2,11 +2,11 @@
   "name": "project5",
   "version": "1.0.0",
   "private": true,
-  "description": "Project5 repaired managed Gen2 migration baseline from Gen1 pftest",
+  "description": "Project5 reference QA candidate using Gen1 pftest state; ownership stays with B",
   "scripts": {
     "test": "node --test test/*.test.cjs",
     "typecheck": "tsc --noEmit",
-    "synth": "node --import tsx scripts/project5-synth.ts managed",
+    "synth": "node --import tsx scripts/project5-synth.ts reference",
     "validate": "npm run typecheck && npm test && npm run synth",
     "frontend:build": "node scripts/build-frontend.cjs",
     "postinstall": "node scripts/patch-amplify-import.cjs"

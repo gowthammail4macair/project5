@@ -15,7 +15,19 @@ jobs:
     timeout-minutes: 30
     env:
       CI: '1'
-      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_REGION: ${{ vars.AWS_REGION || 'ap-south-1' }}
+      GEN2_APP_ID: ${{ vars.GEN2_APP_ID || 'dprojectfivepreview' }}
+      GEN2_BRANCH: main
+      TEST_USER_POOL_ID: ${{ vars.TEST_USER_POOL_ID }}
+      TEST_WEB_CLIENT_ID: ${{ vars.TEST_WEB_CLIENT_ID }}
+      TEST_IDENTITY_POOL_ID: ${{ vars.TEST_IDENTITY_POOL_ID }}
+      TEST_AUTH_ROLE_ARN: ${{ vars.TEST_AUTH_ROLE_ARN }}
+      TEST_UNAUTH_ROLE_ARN: ${{ vars.TEST_UNAUTH_ROLE_ARN }}
+      TEST_CONNECTIONS_TABLE_ARN: ${{ vars.TEST_CONNECTIONS_TABLE_ARN }}
+      TEST_TICKET_STREAM_ARN: ${{ vars.TEST_TICKET_STREAM_ARN }}
+      TEST_SOURCE_WEBSOCKET_API_ID: ${{ vars.TEST_SOURCE_WEBSOCKET_API_ID }}
+      TEST_SOURCE_WEBSOCKET_STAGE: ${{ vars.TEST_SOURCE_WEBSOCKET_STAGE }}
+      PROJECT5_ALLOWED_ORIGINS: ${{ vars.PROJECT5_ALLOWED_ORIGINS || '["http://localhost:3000"]' }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020

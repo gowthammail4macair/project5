@@ -1,15 +1,15 @@
 {
   "status": "passed",
   "scope": "Local structure/selected-identity checks; no deployment",
-  "mode": "managed",
+  "mode": "reference",
   "appId": "dprojectfivepreview",
   "branch": "main",
-  "directory": "dist/project5-managed.out",
+  "directory": "dist/project5-reference.out",
   "modelTables": [
     "Ticket-yfs4rx4ynvgulalyky2k3zfrxi-pftest"
   ],
-  "userPools": 1,
-  "userPoolClients": 2,
+  "userPools": 0,
+  "userPoolClients": 0,
   "nativeS3BucketsForReview": [
     {
       "file": "amplifydprojectfivepreviewmainbranch0086a67abadata35C00E48.nested.template.json",
