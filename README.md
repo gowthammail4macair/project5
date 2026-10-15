@@ -1,4 +1,14 @@
-# Amplify Gen 1: support tickets
+# Project5 B / pftest: support tickets
+
+This branch is the isolated **B / pftest** control application for Project5.
+Its separate frontend uses B's Cognito pool, B's original Gen1
+GraphQL/REST/WebSocket APIs, and B's DynamoDB tables. See
+[B frontend deployment](docs/B-FRONTEND.md) for release commands and evidence.
+The original A site and Project5 C main branch are managed separately.
+
+The sections below are retained source history from A; their original deployment
+URLs and migration status do not describe this B branch. For B, use
+`deployment.json`, `frontend/backend.json` and `frontend/hosting.json`.
 
 ## Preserved Gen1 source after completed migration — 8 October 2026
 

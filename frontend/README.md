@@ -1,72 +1,9 @@
-# SupportDesk frontend
+# B / pftest SupportDesk frontend
 
-The frontend is included in this repository: `index.html`, `style.css`, and `src/`.
-It signs in with this application's Cognito pool and calls REST, AppSync, and
-WebSocket endpoints directly from the browser. REST and GraphQL share this
-application's Ticket table. The other two projects have independent pools,
-APIs, tables, asset buckets, and CloudFront distributions.
+This branch serves B only. `backend.json` records B's public resource IDs and
+`hosting.json` records its separate S3/CloudFront website. The original A site
+is preserved. Builds require current `amplify_outputs.json`; they cannot fall
+back to copied deployment evidence.
 
-## Build and deploy
-
-Run `npm ci` and `npm run validate`. The GitHub main deployment workflow prepares
-hosting, deploys the backend, exports its actual `amplify_outputs.json`, builds
-the frontend, publishes it, and checks each hosted asset against its build hash.
-
-For a manual update after exporting the current backend outputs:
-
-```sh
-npm run hosting:prepare
-npm run frontend:deploy
-node scripts/check-hosting.cjs
-```
-
-`hosting.json` records the live URLs. `hosting-template.json` defines a private
-S3 asset bucket, CloudFront Origin Access Control, and a separate empty S3
-website bucket that redirects to HTTPS. The initial stack was provisioned with
-the account's deployment credentials. `ci-hosting-policy.json` grants the
-repository's existing GitHub OIDC role scoped access to maintain that stack and
-publish assets. Replacing the hosting stack requires provisioning permissions
-and regenerating that policy for the new distribution and origin access control.
-
-The build uses esbuild and amazon-cognito-identity-js. It embeds public endpoint
-and app client identifiers, never passwords or AWS deployment credentials.
-Cognito tokens stay in memory; reloading a page requires signing in again.
-The Content Security Policy limits connections to this backend and Cognito.
-The REST origin allowlist supports both localhost:3000 and this hosted origin.
-
-## Workflows
-
-[Current architecture and browser-notification diagrams](../docs/CURRENT-DIAGRAMS.md) show how API writes update another signed-in browser.
-
-- Create and list your own tickets through REST or generated GraphQL resolvers, including when signed in as an Agent.
-- Edit through REST, then read the same record through GraphQL.
-- Get a summary and close a ticket using custom AppSync Lambda resolvers.
-- Receive new-ticket, status, and comment notifications automatically through API Gateway WebSocket.
-- Add persistent comments under the selected ticket and update its status with Save changes.
-- Open the Agent queue to see tickets created by all current Agents members.
-  Customer tickets are excluded, and customers cannot open this queue.
-- Return to My tickets with its button; refresh, pagination, reconnect and live
-  notifications retain the selected view.
-- Delete only a selected ticket, with an explicit confirmation dialog.
-
-WebSocket notifications update other authorized connected browsers automatically.
-See [live updates and comments](../docs/LIVE-UPDATES-AND-COMMENTS.md) for the event flow, API routes, validation, and limits. Existing accounts must be created through
-Cognito administration; this demo frontend does not offer public registration.
-
-## Original lookup browser recheck — 4 October 2026
-
-On 4 October 2026 the original lookup frontend passed 17 browser checks, including
-REST, generated and custom GraphQL resolvers, WebSocket lookup, authentication,
-and owner authorization denial. Summaries and live responses now clear when the
-selected ticket or its stored content changes. See
-[the recorded results](../evidence/frontend-recheck.json) and
-[browser screenshot](../evidence/frontend-recheck.jpg) for coverage and limitations.
-All new fixtures were cleaned up and the existing demo owner account was retained.
-
-Live notifications and comments supersede the earlier manual lookup walkthrough. The earlier browser reports are historical evidence for that original version.
-
-## Current live-notification verification — 7 October 2026
-
-The live-notification version was deployed and verified on 7 October 2026. See
-[the latest browser evidence](../evidence/live-feature-browser.json), including
-two-session push checks and comment/status workflows.
+Follow [the B release guide](../docs/B-FRONTEND.md). CI validates this branch;
+it does not deploy a backend or publish a frontend automatically.

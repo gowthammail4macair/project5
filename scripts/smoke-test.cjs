@@ -3,11 +3,15 @@ const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const { randomUUID } = require('node:crypto');
 const cognito = require('@aws-sdk/client-cognito-identity-provider');
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
 const { CognitoUserPool, CognitoUser, AuthenticationDetails } = require('amazon-cognito-identity-js');
 const outputs = JSON.parse(fs.readFileSync('amplify_outputs.json', 'utf8'));
+require('./check-backend-outputs.cjs').checkBackendOutputs(outputs);
 const region = outputs.auth.aws_region;
 const poolId = outputs.auth.user_pool_id, clientId = outputs.auth.user_pool_client_id;
 const admin = new cognito.CognitoIdentityProviderClient({ region });
+const database = DynamoDBDocumentClient.from(new DynamoDBClient({ region }));
 const pool = new CognitoUserPool({ UserPoolId: poolId, ClientId: clientId });
 const runId = randomUUID().slice(0, 8), users = [], tickets = [], sockets = [], checks = [];
 const notifications = new WeakMap();
@@ -88,6 +92,13 @@ async function pushed(ws, id, predicate = () => true) {
       assert.equal(unlisted.headers.get('access-control-allow-origin'), null);
     });
     await test('REST creates a ticket with owner identity', async () => { const r = await rest(owner, 'POST', '/tickets', { title: 'Live smoke ' + runId }); assert.equal(r.status, 201, JSON.stringify(r)); ticket = r.body; tickets.push(ticket.id); assert.ok(ticket.owner.includes('::')); });
+    await test('Original A GraphQL API rejects B Cognito token', async () => {
+      const response = await fetch('https://zw4vheuavfdzfkaugphptnr22y.appsync-api.ap-south-1.amazonaws.com/graphql', {
+        method: 'POST', headers: { Authorization: owner, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: '{listTickets(limit:1){items{id}}}' }), signal: AbortSignal.timeout(30000)
+      });
+      assert.equal(response.status, 401);
+    });
     await test('REST owner read/update and cross-owner denial', async () => { assert.equal((await rest(owner, 'GET', '/tickets/' + ticket.id)).status, 200); assert.equal((await rest(other, 'GET', '/tickets/' + ticket.id)).status, 403); assert.equal((await rest(other, 'PATCH', '/tickets/' + ticket.id, { title: 'forbidden' })).status, 403); assert.equal((await rest(owner, 'PATCH', '/tickets/' + ticket.id, { status: 'IN_PROGRESS' })).status, 200); });
     await test('REST custom Lambda authorizer: Agents allowed, owner denied', async () => { assert.equal((await rest(owner, 'GET', '/admin/tickets')).status, 403); assert.equal((await rest(agent, 'GET', '/admin/tickets')).status, 200); });
     const readQuery = 'query($id:ID!){getTicket(id:$id){id title status owner}}';
@@ -97,6 +108,12 @@ async function pushed(ws, id, predicate = () => true) {
       assert.ok(r.data?.createTicket?.id, JSON.stringify(r)); graphqlTicket = r.data.createTicket; tickets.push(graphqlTicket.id);
       r = await gql(owner, 'mutation($input:UpdateTicketInput!){updateTicket(input:$input){id status}}', { input: { id: graphqlTicket.id, status: 'IN_PROGRESS' } });
       assert.equal(r.data?.updateTicket?.status, 'IN_PROGRESS', JSON.stringify(r)); assert.equal((await rest(owner, 'GET', '/tickets/' + graphqlTicket.id)).body.status, 'IN_PROGRESS');
+    });
+    await test('REST and GraphQL records exist in B physical DynamoDB table', async () => {
+      for (const id of [ticket.id, graphqlTicket.id]) {
+        const { Item } = await database.send(new GetCommand({ TableName: outputs.custom.ticketTableName, Key: { id }, ConsistentRead: true }));
+        assert.equal(Item?.id, id); assert.equal(Item?.status, 'IN_PROGRESS'); assert.equal(Item?.owner, ticket.owner);
+      }
     });
     await test('Personal REST/GraphQL lists separate two Agents; Agent queue includes only Agents tickets', async () => {
       const mine=await rest(agent,'POST','/tickets',{title:'Agent queue smoke '+runId});assert.equal(mine.status,201,JSON.stringify(mine));tickets.push(mine.body.id);

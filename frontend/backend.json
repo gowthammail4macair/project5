@@ -1,0 +1,11 @@
+{
+  "stackName": "amplify-supportgenone-pftest-eb70f",
+  "userPoolId": "ap-south-1_zgT2JWoBE",
+  "userPoolClientId": "6ugasqqj1n74lb521orpj047pd",
+  "graphqlApiId": "yfs4rx4ynvgulalyky2k3zfrxi",
+  "graphqlEndpoint": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql",
+  "restApiId": "5pgt9rnw3e",
+  "websocketApiId": "a61vb7pyxd",
+  "ticketTableName": "Ticket-yfs4rx4ynvgulalyky2k3zfrxi-pftest",
+  "connectionsTableName": "Connections-ap-south-1_zgT2JWoBE"
+}

@@ -10,6 +10,7 @@
     "amplify": "amplify",
     "prepare": "node scripts/prepare-local.cjs",
     "frontend:build": "node scripts/build-frontend.cjs",
+    "frontend:outputs": "node scripts/export-outputs.cjs",
     "hosting:prepare": "node scripts/hosting.cjs prepare",
     "frontend:deploy": "npm run frontend:build && node scripts/hosting.cjs publish"
   },

@@ -92,7 +92,7 @@
                 ]
               ]
             },
-            "ALLOWED_ORIGINS": "[\"http://localhost:3000\",\"https://d2i2kf1hg91937.cloudfront.net\"]",
+            "ALLOWED_ORIGINS": "[\"http://localhost:3000\",\"https://d1k425rlhrn2ss.cloudfront.net\"]",
             "USER_POOL_ID": {
               "Ref": "authticketAuthUserPoolId"
             }

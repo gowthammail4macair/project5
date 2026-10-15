@@ -30,20 +30,7 @@ fs.writeFileSync('amplify/.config/local-aws-info.json', JSON.stringify({ [envNam
 run(['init', '--amplify', JSON.stringify({ appId: cfg.appId, envName, defaultEditor: 'vscode' }), '--providers', JSON.stringify({ awscloudformation: { configLevel: 'project', useProfile: true, profileName: 'amplify-ci' } }), '--yes']);
 require('./prepare-local.cjs');
 run(['push', '--yes']);
-const meta = JSON.parse(fs.readFileSync('amplify/backend/amplify-meta.json', 'utf8'));
-const aws = args => JSON.parse(execFileSync('aws', [...args, '--region', cfg.region, '--output', 'json'], { encoding: 'utf8' }));
-const provider = meta.providers.awscloudformation;
-const root = aws(['cloudformation', 'list-stack-resources', '--stack-name', provider.StackName]);
-const nested = root.StackResourceSummaries.find(r => r.LogicalResourceId === 'customticketSocket');
-if (!nested) throw new Error('Missing custom WebSocket stack');
-const socket = aws(['cloudformation', 'describe-stacks', '--stack-name', nested.PhysicalResourceId]).Stacks[0];
-const socketOut = Object.fromEntries(socket.Outputs.map(o => [o.OutputKey, o.OutputValue]));
-const auth = meta.auth.ticketAuth.output, graphql = meta.api.supportGraphql.output, rest = meta.api.supportRest.output;
-const output = { version: '1.4', auth: { aws_region: cfg.region, user_pool_id: auth.UserPoolId, user_pool_client_id: auth.AppClientIDWeb },
- data: { url: graphql.GraphQLAPIEndpointOutput, aws_region: cfg.region }, custom: { rest: { endpoint: rest.RootUrl, region: cfg.region }, websocket: { endpoint: socketOut.WebSocketUrl },
- ticketTableName: 'Ticket-' + graphql.GraphQLAPIIdOutput + '-' + envName, connectionsTableName: 'Connections-' + auth.UserPoolId } };
-fs.writeFileSync('amplify_outputs.json', JSON.stringify(output, null, 2) + '\n');
-console.log('Exported deployed endpoints to amplify_outputs.json');
+require('./export-outputs.cjs');
 } finally {
   fs.unlinkSync(credentialFile);
   fs.unlinkSync(configFile);
