@@ -8,4 +8,4 @@ Notifications remain disabled until the reviewed single-consumer handoff and cal
 
 See [Step 8 repairs](docs/STEP8-REPAIRS.md) and the preserved [migration notes](migration_steps_notes.md). Gen1 CLI operations belong in the intact control checkout.
 
-For backend CI, follow [GitHub Actions deployment setup](docs/GITHUB-ACTIONS-DEPLOYMENT.md). The workflow validates pushes to `main`; AWS deployment is enabled only when the repository variable `PROJECT5_DEPLOY_ENABLED` is `true` and the OIDC role/actual C app settings are configured.
+For CI/CD, follow [GitHub Actions deployment setup](docs/GITHUB-ACTIONS-DEPLOYMENT.md). Pushes to `main` validate, deploy the backend, then publish the frontend when `PROJECT5_DEPLOY_ENABLED=true`. C is `d3bsim6mrnq854/main`; its website is https://main.d3bsim6mrnq854.amplifyapp.com. Hosting Auto-build stays off because the GitHub workflow starts the Hosting job after backend success.

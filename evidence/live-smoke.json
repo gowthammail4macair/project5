@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-07T17:24:53.002Z",
-  "scope": "Live AWS HTTPS, Cognito SRP and WebSocket integration",
+  "timestamp": "2026-10-15T04:06:19.667Z",
+  "scope": "Project5 C live AWS HTTPS, B Cognito SRP and shared-state WebSocket integration",
   "checks": [
     {
       "name": "Cognito SRP login: two owners and two Agents members",
@@ -84,43 +84,43 @@
     ],
     "socketsClosed": 3,
     "ticketIds": [
-      "11ba2ace-97e7-4bea-b36a-5bed0cc10f3f",
-      "b86cb180-897b-4d98-bc9e-cb9c653dbee8",
-      "830f33a5-da47-4156-b20e-07ab889ab203",
-      "25431845-be41-485b-a96a-a01e681af021",
-      "b90cf35e-b11b-47e9-b134-82caa26b1c03",
-      "61b568a7-e2ac-4d24-8aaa-69e50bb6c10c"
+      "37144d20-38fb-456b-93cf-a67939d247eb",
+      "58d83588-5d2b-4a92-8cbc-0693d1ad6653",
+      "41c85ff1-00de-4488-923e-0a361d635d11",
+      "c5c26731-9cfa-4af1-82f3-9717644c0f08",
+      "b6b7538a-bfad-4ffe-bb33-25d7e71a0913",
+      "a060757d-00b1-48ab-bf39-bd4c519af5b5"
     ],
     "ticketResults": [
       {
-        "id": "11ba2ace-97e7-4bea-b36a-5bed0cc10f3f",
+        "id": "37144d20-38fb-456b-93cf-a67939d247eb",
         "status": 404
       },
       {
-        "id": "b86cb180-897b-4d98-bc9e-cb9c653dbee8",
+        "id": "58d83588-5d2b-4a92-8cbc-0693d1ad6653",
         "status": 404
       },
       {
-        "id": "830f33a5-da47-4156-b20e-07ab889ab203",
+        "id": "41c85ff1-00de-4488-923e-0a361d635d11",
         "status": 200
       },
       {
-        "id": "25431845-be41-485b-a96a-a01e681af021",
+        "id": "c5c26731-9cfa-4af1-82f3-9717644c0f08",
         "status": 200
       },
       {
-        "id": "b90cf35e-b11b-47e9-b134-82caa26b1c03",
+        "id": "b6b7538a-bfad-4ffe-bb33-25d7e71a0913",
         "status": 200
       },
       {
-        "id": "61b568a7-e2ac-4d24-8aaa-69e50bb6c10c",
+        "id": "a060757d-00b1-48ab-bf39-bd4c519af5b5",
         "status": 200
       }
     ]
   },
   "endpoints": {
-    "rest": "https://iu6zhvysy7.execute-api.ap-south-1.amazonaws.com/dev",
-    "graphql": "https://zw4vheuavfdzfkaugphptnr22y.appsync-api.ap-south-1.amazonaws.com/graphql",
-    "websocket": "wss://b36pvu2da7.execute-api.ap-south-1.amazonaws.com/dev"
+    "rest": "https://jwf4l5ykwb.execute-api.ap-south-1.amazonaws.com/main",
+    "graphql": "https://fmqphxy3vzawjbgy5gpvta42fq.appsync-api.ap-south-1.amazonaws.com/graphql",
+    "websocket": "wss://tuw5ja3x1i.execute-api.ap-south-1.amazonaws.com/main"
   }
 }

@@ -1,0 +1,166 @@
+diff --git a/amplify/backend/api/supportGraphql/override.ts b/amplify/backend/api/supportGraphql/override.ts
+new file mode 100644
+index 0000000..b077853
+--- /dev/null
++++ b/amplify/backend/api/supportGraphql/override.ts
+@@ -0,0 +1,6 @@
++import { AmplifyApiGraphQlResourceStackTemplate } from '@aws-amplify/cli-extensibility-helper';
++
++// B owns this setting during Project5 reference QA; retain it on every Gen1 push.
++export function override(resources: AmplifyApiGraphQlResourceStackTemplate) {
++  resources.models!.Ticket!.modelDDBTable!.addPropertyOverride('DeletionProtectionEnabled', true);
++}
+diff --git a/amplify/backend/custom/ticketSocket/cdk-stack.ts b/amplify/backend/custom/ticketSocket/cdk-stack.ts
+index 97f7ec1..1f9604d 100644
+--- a/amplify/backend/custom/ticketSocket/cdk-stack.ts
++++ b/amplify/backend/custom/ticketSocket/cdk-stack.ts
+@@ -3,7 +3,6 @@ import * as AmplifyHelpers from '@aws-amplify/cli-extensibility-helper';
+ import { Construct } from 'constructs';
+ import { CfnApi, CfnAuthorizer, CfnIntegration, CfnRoute, CfnStage } from 'aws-cdk-lib/aws-apigatewayv2';
+ import { CfnPermission, CfnEventSourceMapping } from 'aws-cdk-lib/aws-lambda';
+-import { CfnPolicy } from 'aws-cdk-lib/aws-iam';
+ import { Table, AttributeType, BillingMode } from 'aws-cdk-lib/aws-dynamodb';
+ import { CfnUserPoolGroup } from 'aws-cdk-lib/aws-cognito';
+ 
+@@ -24,21 +23,14 @@ export class cdkStack extends cdk.Stack {
+     const authorizerArn = cdk.Fn.ref(dependencies.function.ticketAuthorizer.Arn);
+     const apiId = cdk.Fn.ref(dependencies.api.supportGraphql.GraphQLAPIIdOutput);
+     const streamArn = cdk.Fn.importValue(cdk.Fn.join(':', [apiId, 'GetAtt:TicketTable:StreamArn']));
+-    const streamPolicy = new CfnPolicy(this, 'TicketStreamPolicy', {
+-      policyName: 'ticket-stream-notifications',
+-      roles: [cdk.Fn.ref(dependencies.function.ticketSocketHandler.LambdaExecutionRole)],
+-      policyDocument: { Version: '2012-10-17', Statement: [{ Effect: 'Allow',
+-        Action: ['dynamodb:DescribeStream','dynamodb:GetRecords','dynamodb:GetShardIterator'], Resource: streamArn }] }
+-    });
+     const mapping = new CfnEventSourceMapping(this, 'TicketNotifications', {
+       functionName: handlerArn, eventSourceArn: streamArn, startingPosition: 'LATEST', batchSize: 10,
+       bisectBatchOnFunctionError: true, maximumRetryAttempts: 3, maximumRecordAgeInSeconds: 3600
+     });
+-    mapping.addDependency(streamPolicy);
+     new CfnUserPoolGroup(this, 'Agents', { userPoolId: poolId, groupName: 'Agents' });
+     new Table(this, 'Connections', { tableName: cdk.Fn.join('', ['Connections-', poolId]),
+       partitionKey: { name: 'connectionId', type: AttributeType.STRING }, billingMode: BillingMode.PAY_PER_REQUEST,
+-      timeToLiveAttribute: 'expiresAt', removalPolicy: cdk.RemovalPolicy.RETAIN });
++      timeToLiveAttribute: 'expiresAt', deletionProtection: true, removalPolicy: cdk.RemovalPolicy.RETAIN });
+     const api = new CfnApi(this, 'TicketSocket', { name: cdk.Fn.join('-', ['ticket-socket', cdk.Fn.ref('env')]),
+       protocolType: 'WEBSOCKET', routeSelectionExpression: '$request.body.action' });
+     const uri = (arn: string) => cdk.Fn.join('', ['arn:', cdk.Aws.PARTITION, ':apigateway:', cdk.Aws.REGION, ':lambda:path/2015-03-31/functions/', arn, '/invocations']);
+diff --git a/amplify/backend/function/ticketSocketHandler/ticketSocketHandler-cloudformation-template.json b/amplify/backend/function/ticketSocketHandler/ticketSocketHandler-cloudformation-template.json
+index 6754d98..46e29f5 100644
+--- a/amplify/backend/function/ticketSocketHandler/ticketSocketHandler-cloudformation-template.json
++++ b/amplify/backend/function/ticketSocketHandler/ticketSocketHandler-cloudformation-template.json
+@@ -134,7 +134,38 @@
+               ]
+             }
+           ]
+-        }
++        },
++        "Policies": [
++          {
++            "PolicyName": "ticket-stream-notifications",
++            "PolicyDocument": {
++              "Version": "2012-10-17",
++              "Statement": [
++                {
++                  "Effect": "Allow",
++                  "Action": [
++                    "dynamodb:DescribeStream",
++                    "dynamodb:GetRecords",
++                    "dynamodb:GetShardIterator"
++                  ],
++                  "Resource": {
++                    "Fn::ImportValue": {
++                      "Fn::Join": [
++                        ":",
++                        [
++                          {
++                            "Ref": "apisupportGraphqlGraphQLAPIIdOutput"
++                          },
++                          "GetAtt:TicketTable:StreamArn"
++                        ]
++                      ]
++                    }
++                  }
++                }
++              ]
++            }
++          }
++        ]
+       }
+     },
+     "lambdaexecutionpolicy": {
+@@ -294,30 +325,33 @@
+               "Action": [
+                 "execute-api:ManageConnections"
+               ],
+-              "Resource": {
+-                "Fn::Join": [
+-                  "",
+-                  [
+-                    "arn:",
+-                    {
+-                      "Ref": "AWS::Partition"
+-                    },
+-                    ":execute-api:",
+-                    {
+-                      "Ref": "AWS::Region"
+-                    },
+-                    ":",
+-                    {
+-                      "Ref": "AWS::AccountId"
+-                    },
+-                    ":*/",
+-                    {
+-                      "Ref": "env"
+-                    },
+-                    "/*/@connections/*"
++              "Resource": [
++                {
++                  "Fn::Join": [
++                    "",
++                    [
++                      "arn:",
++                      {
++                        "Ref": "AWS::Partition"
++                      },
++                      ":execute-api:",
++                      {
++                        "Ref": "AWS::Region"
++                      },
++                      ":",
++                      {
++                        "Ref": "AWS::AccountId"
++                      },
++                      ":*/",
++                      {
++                        "Ref": "env"
++                      },
++                      "/*/@connections/*"
++                    ]
+                   ]
+-                ]
+-              }
++                },
++                "arn:aws:execute-api:ap-south-1:112097210422:tuw5ja3x1i/main/*/@connections/*"
++              ]
+             }
+           ]
+         }
+diff --git a/scripts/synth.ts b/scripts/synth.ts
+index 3e47c57..ef335c6 100644
+--- a/scripts/synth.ts
++++ b/scripts/synth.ts
+@@ -63,7 +63,12 @@ async function main() {
+   assert.equal(routes.length, 4);
+   assert.equal(socketResources.filter(r => r.Type === 'AWS::Lambda::EventSourceMapping').length, 1);
+   assert.ok(JSON.stringify(socketResources).includes('GetAtt:TicketTable:StreamArn'));
+-  assert.ok(JSON.stringify(socketResources).includes('dynamodb:GetRecords'));
++  const socketHandler = JSON.parse(readFileSync('amplify/backend/function/ticketSocketHandler/ticketSocketHandler-cloudformation-template.json', 'utf8'));
++  assert.equal(socketTemplate.Resources.TicketStreamPolicy, undefined);
++  assert.equal(socketHandler.Resources.TicketStreamPolicy, undefined);
++  const streamPolicies = socketHandler.Resources.LambdaExecutionRole.Properties.Policies.filter((p: any) => p.PolicyName === 'ticket-stream-notifications');
++  assert.equal(streamPolicies.length, 1);
++  assert.deepEqual(streamPolicies[0].PolicyDocument.Statement[0].Resource, { 'Fn::ImportValue': { 'Fn::Join': [':', [{ Ref: 'apisupportGraphqlGraphQLAPIIdOutput' }, 'GetAtt:TicketTable:StreamArn']] } });
+   assert.deepEqual(body.paths['/tickets/{id}/comments'].post.security, [{ Cognito: [] }]);
+   assert.ok(Object.values(auth.Resources).some((r: any) => r.Type === 'AWS::Cognito::UserPool'));
+   // Verify the backend-config graph has no category-level dependency cycle.
