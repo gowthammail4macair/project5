@@ -1,0 +1,69 @@
+{
+  "scope": "Live Project5 reference-QA identity/ownership and consumer checks",
+  "status": "passed",
+  "nativeOwners": [
+    {
+      "LogicalResourceId": "UserPool",
+      "PhysicalResourceId": "ap-south-1_zgT2JWoBE",
+      "ResourceType": "AWS::Cognito::UserPool",
+      "StackId": "arn:aws:cloudformation:ap-south-1:112097210422:stack/amplify-supportgenone-pftest-eb70f-authticketAuth-CUCM0S6L3RE4/50e7b460-c658-11f1-8c84-0a9ffd6c6771",
+      "ResourceStatus": "UPDATE_COMPLETE"
+    },
+    {
+      "LogicalResourceId": "TicketTable",
+      "PhysicalResourceId": "Ticket-yfs4rx4ynvgulalyky2k3zfrxi-pftest",
+      "ResourceType": "AWS::DynamoDB::Table",
+      "StackId": "arn:aws:cloudformation:ap-south-1:112097210422:stack/amplify-supportgenone-pftest-eb70f-apisupportGraphql-198O3I85ACUAD-Ticket-BI8EHJF0PW5J/706699f0-c658-11f1-802d-0affce1c98e1",
+      "ResourceStatus": "UPDATE_COMPLETE"
+    },
+    {
+      "LogicalResourceId": "Connections827CEF2F",
+      "PhysicalResourceId": "Connections-ap-south-1_zgT2JWoBE",
+      "ResourceType": "AWS::DynamoDB::Table",
+      "StackId": "arn:aws:cloudformation:ap-south-1:112097210422:stack/amplify-supportgenone-pftest-eb70f-customticketSocket-KEUE1TCSKDEZ/c34b4df0-c658-11f1-ac65-0a72b63311a3",
+      "ResourceStatus": "UPDATE_COMPLETE"
+    }
+  ],
+  "Ticket": {
+    "tableId": "a3406852-6c35-4263-8167-4392c8327dea",
+    "samePhysicalTable": true,
+    "deletionProtectionEnabled": true
+  },
+  "Connections": {
+    "tableId": "f04ff53a-25f4-4e17-92dc-d691b3963611",
+    "samePhysicalTable": true,
+    "deletionProtectionEnabled": true
+  },
+  "sameCognitoIdentityAndConfiguration": true,
+  "consumers": [
+    {
+      "function": "amplify-d3bsim6mrnq854-ma-project5ticketSocketHand-tdisSVB047cu",
+      "state": "Disabled",
+      "uuid": "785362af-72c9-4ee6-9703-769890095bd4"
+    },
+    {
+      "function": "ticketSocketHandler-pftest",
+      "state": "Enabled",
+      "uuid": "09a04855-042b-432c-9ffc-2d5a515541c4"
+    }
+  ],
+  "C": {
+    "root": "amplify-d3bsim6mrnq854-main-branch-62962b63d8",
+    "status": "UPDATE_COMPLETE",
+    "nativeSharedStateResources": 0,
+    "tableManagementDenyPolicies": 2
+  },
+  "restLambda": {
+    "FunctionName": "amplify-d3bsim6mrnq854-ma-project5ticketRestlambda-FrGS4e5cAphU",
+    "CodeSha256": "RfPuTtbgadk8ZzbjACzERfHrSHB6lVXdhu8Azd/ZrrE=",
+    "LastModified": "2026-10-15T04:13:22.000+0000",
+    "LastUpdateStatus": "Successful"
+  },
+  "BCallbackForC": true,
+  "verifiedAt": "2026-10-15T04:20:35.254478+00:00",
+  "cognitoComparisonExclusions": [
+    "LastModifiedDate",
+    "EstimatedNumberOfUsers"
+  ],
+  "cognitoComparison": "All other describe-user-pool fields match the saved pre-deployment baseline"
+}

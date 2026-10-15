@@ -77,3 +77,7 @@ The repair added eight entries without changing any existing locked package vers
 A full clean install with the user's Node 22.22.0/npm 10.9.4 completed, including the importer postinstall patch. TypeScript, all 40 current tests, reference synthesis for C (`d3bsim6mrnq854/main`) and frontend packaging from C's local outputs passed on Node 22. These are local installation/build checks, not a GitHub deployment or live browser QA result. Include the repaired `package-lock.json` in the next reviewed commit before CI uses it.
 
 The GraphQL transformer retains source warnings about root-field auth and possible owner reassignment on updates. Lambda/creator tests cover the reviewed behavior, but this checkpoint does not change the original GraphQL update-ownership policy or prove live authorization. Review that policy in the actual QA security matrix.
+
+## 15 October: live GitHub deployment follow-up
+
+The repaired lockfile passed `npm ci` on the GitHub Linux runner. The configured OIDC workflow now deploys C's backend and explicitly releases the outputs-only frontend after validation. See [CI/CD setup](GITHUB-ACTIONS-DEPLOYMENT.md) and [verification](CICD-VERIFICATION.md) for actual revisions, run links, live application tests and the Lambda log probe. The earlier validation-only descriptions above describe the original Step 8 checkpoint. Ownership transfer remains outside this reference-QA deployment.

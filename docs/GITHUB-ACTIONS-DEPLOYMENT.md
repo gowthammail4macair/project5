@@ -2,7 +2,7 @@
 
 Configured 15 October 2026. Subsequent pushes to `main` deploy the backend and publish the frontend after validation. This replaces the terminal backend-deployment command in Step 11 during the **Step 9–12 reference-QA phase**.
 
-C already exists as **`d3bsim6mrnq854` / `main`**, with backend root **`amplify-d3bsim6mrnq854-main-branch-62962b63d8`**. The GitHub OIDC provider is reused, the `Project5GitHubDeploy` role has been created, and repository variables have been configured. Deployment is initially disabled until the first GitHub validation passes. The commands below record the setup for reuse; inspect existing resources before rerunning creation commands. The final live results are recorded in `CICD-VERIFICATION.md`.
+C already exists as **`d3bsim6mrnq854` / `main`**, with backend root **`amplify-d3bsim6mrnq854-main-branch-62962b63d8`**. The GitHub OIDC provider is reused, the `Project5GitHubDeploy` role has been created, and repository variables have been configured. The first validation passed with deployment disabled, after which deployment was enabled and the first backend/frontend workflow succeeded. Automatic deployment is now enabled for main. The commands below record the setup for reuse; inspect existing resources before rerunning creation commands. The final live results are recorded in `CICD-VERIFICATION.md`.
 
 ```mermaid
 flowchart LR
@@ -222,7 +222,7 @@ The runner performs these operations:
 7. Starts C main's Amplify Hosting `RELEASE` job, waits for success, and verifies that its commit ID matches the workflow.
 8. Fetches the public `build.json` and confirms the same commit plus B's pool/client IDs. Hosting only retrieves outputs and builds the frontend; it does not deploy the backend again.
 
-This can perform C's **first backend deployment** if it has none yet. If C was deployed from the terminal already, it updates the same app/branch backend. [AWS custom-pipeline instructions](https://docs.amplify.aws/react/deploy-and-host/amplify-hosting/custom-pipelines/).
+This can perform C's **first backend deployment** if it has none yet. If C was deployed from the terminal already, it updates the same app/branch backend. [AWS custom-pipeline instructions](https://docs.amplify.aws/react/deploy-and-host/fullstack-branching/custom-pipelines/).
 
 Wait for the **deploy** job to succeed and inspect C's CloudFormation root/nested stacks. Then complete Step 11's outputs checks and Step 12's live QA. A green validation job alone is not deployment success. Avoid simultaneous terminal deployments; workflow concurrency only serializes this GitHub workflow.
 
@@ -252,7 +252,9 @@ The workflow deploys C's backend, then calls `amplify start-job` for C's `main` 
 
 `RELEASE` normally uses the branch's latest change. The script supplies the run SHA and verifies both the reported job commit and the published manifest. If either differs, the GitHub run fails: inspect it before starting another deployment. Do not run a terminal backend deployment or an independent Hosting release concurrently with this pipeline. [AWS StartJob reference](https://docs.aws.amazon.com/cli/latest/reference/amplify/start-job.html).
 
-Before live WebSocket testing, B's active broadcaster must have callback permission for C's endpoint. For this C deployment, the B Lambda source template adds exactly `arn:aws:execute-api:ap-south-1:112097210422:tuw5ja3x1i/main/*/@connections/*` to `connections-and-callbacks`; B's existing pftest permission remains. Deploy that change through B's Gen1 control checkout (`amplify push` while selected environment is pftest). Do not enable C's stream mapping: B remains the single active stream consumer. This policy update changes permission on B's Lambda role and does not transfer Cognito/table ownership.
+Before live WebSocket testing, B's active broadcaster must have callback permission for C's endpoint. For this C deployment, the B Lambda source template adds exactly `arn:aws:execute-api:ap-south-1:112097210422:tuw5ja3x1i/main/*/@connections/*` to `connections-and-callbacks`; B's existing pftest permission remains. Deploy that change through B's Gen1 control checkout (`amplify push` while selected environment is pftest). Do not enable C's stream mapping: B remains the single active stream consumer. This policy update changes permission on B's Lambda role and does not transfer Cognito/table ownership. B's local source commit is `3cedffe`. Its exact source patch is saved in [project5-B-qa-prerequisites.patch](project5-B-qa-prerequisites.patch) for review; it is specific to this B/C pair and is not a generic patch for another environment. The Gen1 repository was not pushed to GitHub.
+
+The initial B push exposed another source/configuration gap: deletion protection had been enabled directly in AWS, but B's source did not declare it, so the normal push reset it. The correction declares it in `api/supportGraphql/override.ts` for Ticket and `custom/ticketSocket/cdk-stack.ts` for Connections, then deploys through B. Both physical table IDs stayed the same and both protections were restored to `true`. Keep those declarations in B for future schema/infra work during QA; do not rely on a one-time console setting.
 
 To rerun the live application suite from the Project5 directory after deploying:
 
@@ -278,4 +280,4 @@ This creates four temporary users (email delivery suppressed), tests customer/Ag
 | Imported-table management denied | B's current configuration and reference mapping; preserve the table-write deny safeguards |
 | CloudFormation fails | Read failed events, wait for stable rollback, fix the cause, then retry |
 
-Initial preparation checks passed on local Node 24.16.0: TypeScript, all 40 tests (including deployment-target rejection cases), reference synthesis, workflow YAML parsing and shell syntax. On 15 October, a follow-up lockfile repair passed a full clean install on Node 22.22.0/npm 10.9.4, followed by TypeScript, the 40 tests, reference synthesis and frontend packaging. Include that repaired lockfile in the reviewed commit. Only a successful GitHub deployment run confirms the Linux runner, live OIDC authentication and deployment.
+Initial preparation checks passed on local Node 24.16.0: TypeScript, all 40 tests (including deployment-target rejection cases), reference synthesis, workflow YAML parsing and shell syntax. On 15 October, a follow-up lockfile repair passed a full clean install on Node 22.22.0/npm 10.9.4, followed by TypeScript, the 40 tests, reference synthesis and frontend packaging. Include that repaired lockfile in the reviewed commit. The live runs and runtime evidence are recorded in [CICD-VERIFICATION.md](CICD-VERIFICATION.md).

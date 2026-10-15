@@ -1,0 +1,161 @@
+{
+  "run": {
+    "databaseId": 38680045151,
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/gowthammail4macair/project5/actions/runs/38680045151",
+    "headSha": "c90744870eb64a2d13b1fc375422c9adbb407074",
+    "event": "push",
+    "createdAt": "2026-10-15T04:10:12Z",
+    "updatedAt": "2026-10-15T04:16:18Z"
+  },
+  "jobs": [
+    {
+      "name": "validate",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm install --global npm@11.13.0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "conclusion": "success"
+        },
+        {
+          "name": "Validate the reference QA backend",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check deployment settings",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm install --global npm@11.13.0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "conclusion": "success"
+        },
+        {
+          "name": "Authenticate to AWS with GitHub OIDC",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify C app and branch in AWS",
+          "conclusion": "success"
+        },
+        {
+          "name": "Deploy C main backend",
+          "conclusion": "success"
+        },
+        {
+          "name": "Publish C frontend and verify the deployed commit",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Authenticate to AWS with GitHub OIDC",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "hosting": {
+    "jobId": "3",
+    "status": "SUCCEED",
+    "commitId": "c90744870eb64a2d13b1fc375422c9adbb407074"
+  },
+  "publicBuild": {
+    "project": "project5",
+    "configSource": "amplify_outputs.json",
+    "sourceSha": "c90744870eb64a2d13b1fc375422c9adbb407074",
+    "builtAt": "2026-10-15T04:16:01.850Z",
+    "frontendLabel": "Project5 Gen2",
+    "assets": [
+      {
+        "path": "assets/app-bb8545702e1c.js",
+        "sha256": "bb8545702e1c6238a3042bf791826f18d4156ff3d30869f82d18ae5b2be49cea",
+        "bytes": 109111
+      },
+      {
+        "path": "assets/style-861d63dccec6.css",
+        "sha256": "861d63dccec639b8202e547cb31712c292de8bf37e6de8ba5e878b7e76aa14a4",
+        "bytes": 11763
+      },
+      {
+        "path": "index.html",
+        "sha256": "83eef34cbd3337df73e71296bb29acaed3ea605ddc3b015bf8b35a32046b4654",
+        "bytes": 8922
+      }
+    ],
+    "auth": {
+      "poolId": "ap-south-1_zgT2JWoBE",
+      "clientId": "6ugasqqj1n74lb521orpj047pd",
+      "region": "ap-south-1"
+    },
+    "api": {
+      "rest": "https://jwf4l5ykwb.execute-api.ap-south-1.amazonaws.com/main",
+      "graphql": "https://fmqphxy3vzawjbgy5gpvta42fq.appsync-api.ap-south-1.amazonaws.com/graphql",
+      "websocket": "wss://tuw5ja3x1i.execute-api.ap-south-1.amazonaws.com/main"
+    }
+  }
+}

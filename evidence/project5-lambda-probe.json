@@ -1,0 +1,41 @@
+{
+  "verifiedAt": "2026-10-15T04:16:40.093132+00:00",
+  "functionName": "amplify-d3bsim6mrnq854-ma-project5ticketRestlambda-FrGS4e5cAphU",
+  "marker": "PROJECT5_CICD_PROBE_20261015",
+  "deployedCommit": "c90744870eb64a2d13b1fc375422c9adbb407074",
+  "beforeCodeSha256": "xyivoNcrVAizdOEesksBCJp+BGmrG5dO5mfKcQhEroI=",
+  "afterCodeSha256": "RfPuTtbgadk8ZzbjACzERfHrSHB6lVXdhu8Azd/ZrrE=",
+  "lastModified": "2026-10-15T04:13:22.000+0000",
+  "events": [
+    {
+      "timestamp": 1792037722471,
+      "message": "2026-10-15T04:15:22.471Z\tb8a79e4d-0aa5-4358-b548-dbe2ee6531a1\tINFO\tPROJECT5_CICD_PROBE_20261015 {\n  requestId: 'b8a79e4d-0aa5-4358-b548-dbe2ee6531a1',\n  method: 'GET',\n  route: '/tickets/{id}'\n}\n",
+      "logStreamName": "2026/10/15/[$LATEST]89a715e9e58548a389d7d01a270a5230",
+      "eventId": "39963776634980906632472516335948290430870328314181582884"
+    },
+    {
+      "timestamp": 1792037722609,
+      "message": "2026-10-15T04:15:22.609Z\taaa8629e-545f-43a1-a027-714a5278a827\tINFO\tPROJECT5_CICD_PROBE_20261015 {\n  requestId: 'aaa8629e-545f-43a1-a027-714a5278a827',\n  method: 'GET',\n  route: '/tickets/{id}'\n}\n",
+      "logStreamName": "2026/10/15/[$LATEST]89a715e9e58548a389d7d01a270a5230",
+      "eventId": "39963776638058409469869742329480219552495802202006880297"
+    },
+    {
+      "timestamp": 1792037723996,
+      "message": "2026-10-15T04:15:23.996Z\t3019f8f8-4846-40b7-9e13-485969717e4f\tINFO\tPROJECT5_CICD_PROBE_20261015 {\n  requestId: '3019f8f8-4846-40b7-9e13-485969717e4f',\n  method: 'GET',\n  route: '/admin/tickets'\n}\n",
+      "logStreamName": "2026/10/15/[$LATEST]89a715e9e58548a389d7d01a270a5230",
+      "eventId": "39963776668989543060231716626790260796659079610801717300"
+    },
+    {
+      "timestamp": 1792037725363,
+      "message": "2026-10-15T04:15:25.363Z\t15b3da20-a697-48b9-889a-6d07fb2614e8\tINFO\tPROJECT5_CICD_PROBE_20261015 {\n  requestId: '15b3da20-a697-48b9-889a-6d07fb2614e8',\n  method: 'GET',\n  route: '/tickets/{id}'\n}\n",
+      "logStreamName": "2026/10/15/[$LATEST]89a715e9e58548a389d7d01a270a5230",
+      "eventId": "39963776699474661746623078461269587675369389789476945976"
+    },
+    {
+      "timestamp": 1792037725745,
+      "message": "2026-10-15T04:15:25.745Z\t3a91071a-40f0-4ce5-b73d-bdcb6b58df8c\tINFO\tPROJECT5_CICD_PROBE_20261015 {\n  requestId: '3a91071a-40f0-4ce5-b73d-bdcb6b58df8c',\n  method: 'GET',\n  route: '/tickets/{id}'\n}\n",
+      "logStreamName": "2026/10/15/[$LATEST]89a715e9e58548a389d7d01a270a5230",
+      "eventId": "39963776707993546412461776501336232055521063884761464897"
+    }
+  ]
+}

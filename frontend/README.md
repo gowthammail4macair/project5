@@ -1,72 +1,38 @@
-# SupportDesk frontend
+# Project5 SupportDesk frontend
 
-The frontend is included in this repository: `index.html`, `style.css`, and `src/`.
-It signs in with this application's Cognito pool and calls REST, AppSync, and
-WebSocket endpoints directly from the browser. REST and GraphQL share this
-application's Ticket table. The other two projects have independent pools,
-APIs, tables, asset buckets, and CloudFront distributions.
+Website: https://main.d3bsim6mrnq854.amplifyapp.com
 
-## Build and deploy
+C's frontend uses B's existing Cognito pool and shared Ticket/Connections tables through C's REST, GraphQL and WebSocket APIs. B retains native state ownership during this QA phase and remains the active stream broadcaster; C's stream mapping stays disabled.
 
-Run `npm ci` and `npm run validate`. The GitHub main deployment workflow prepares
-hosting, deploys the backend, exports its actual `amplify_outputs.json`, builds
-the frontend, publishes it, and checks each hosted asset against its build hash.
+## Deploy through GitHub Actions
 
-For a manual update after exporting the current backend outputs:
+Push reviewed changes to `main`. The workflow validates, deploys C's backend, then explicitly releases the frontend through Amplify Hosting. Hosting fetches C's `amplify_outputs.json`, builds `frontend/dist`, and publishes it. The workflow checks the published commit and B auth IDs in `build.json`. Amplify Auto-build stays disabled.
 
-```sh
-npm run hosting:prepare
-npm run frontend:deploy
-node scripts/check-hosting.cjs
+Follow [CI/CD setup](../docs/GITHUB-ACTIONS-DEPLOYMENT.md) and [verified results](../docs/CICD-VERIFICATION.md). The old S3/CloudFront `hosting*.json` files are inherited Gen1 evidence; the current Project5 frontend uses the Amplify Hosting URL above.
+
+## Run locally
+
+From the Project5 repository root, using the authorized AWS CLI session in Mumbai:
+
+```bash
+cd /Users/testadmin/Documents/AmplifyGen1_to_Gen2_migration/project5-migration/project5-generation
+export AWS_REGION=ap-south-1
+npm ci
+npx ampx generate outputs --app-id d3bsim6mrnq854 --branch main
+npm run frontend:build
+python3 -m http.server 3000 --directory frontend/dist
 ```
 
-`hosting.json` records the live URLs. `hosting-template.json` defines a private
-S3 asset bucket, CloudFront Origin Access Control, and a separate empty S3
-website bucket that redirects to HTTPS. The initial stack was provisioned with
-the account's deployment credentials. `ci-hosting-policy.json` grants the
-repository's existing GitHub OIDC role scoped access to maintain that stack and
-publish assets. Replacing the hosting stack requires provisioning permissions
-and regenerating that policy for the new distribution and origin access control.
+Open http://localhost:3000. Keep the server running; press Control-C to stop it. The backend already permits this origin. Sign in with an existing B Cognito account, including the saved demo customer account. Credentials and generated outputs stay outside Git.
 
-The build uses esbuild and amazon-cognito-identity-js. It embeds public endpoint
-and app client identifiers, never passwords or AWS deployment credentials.
-Cognito tokens stay in memory; reloading a page requires signing in again.
-The Content Security Policy limits connections to this backend and Cognito.
-The REST origin allowlist supports both localhost:3000 and this hosted origin.
+For backend code validation, load the nine B reference inputs and C's actual app ID as described in the CI/CD guide before `npm run validate`.
 
-## Workflows
+## Application checks
 
-[Current architecture and browser-notification diagrams](../docs/CURRENT-DIAGRAMS.md) show how API writes update another signed-in browser.
+The app supports personal tickets through REST/GraphQL, status changes, summaries/closing through custom GraphQL Lambda resolvers, comments, WebSocket notifications, and an Agents-only queue. The live suite checks allowed and denied access with temporary users and removes its own fixtures:
 
-- Create and list your own tickets through REST or generated GraphQL resolvers, including when signed in as an Agent.
-- Edit through REST, then read the same record through GraphQL.
-- Get a summary and close a ticket using custom AppSync Lambda resolvers.
-- Receive new-ticket, status, and comment notifications automatically through API Gateway WebSocket.
-- Add persistent comments under the selected ticket and update its status with Save changes.
-- Open the Agent queue to see tickets created by all current Agents members.
-  Customer tickets are excluded, and customers cannot open this queue.
-- Return to My tickets with its button; refresh, pagination, reconnect and live
-  notifications retain the selected view.
-- Delete only a selected ticket, with an explicit confirmation dialog.
+```bash
+node scripts/project5-smoke-test.cjs
+```
 
-WebSocket notifications update other authorized connected browsers automatically.
-See [live updates and comments](../docs/LIVE-UPDATES-AND-COMMENTS.md) for the event flow, API routes, validation, and limits. Existing accounts must be created through
-Cognito administration; this demo frontend does not offer public registration.
-
-## Original lookup browser recheck — 4 October 2026
-
-On 4 October 2026 the original lookup frontend passed 17 browser checks, including
-REST, generated and custom GraphQL resolvers, WebSocket lookup, authentication,
-and owner authorization denial. Summaries and live responses now clear when the
-selected ticket or its stored content changes. See
-[the recorded results](../evidence/frontend-recheck.json) and
-[browser screenshot](../evidence/frontend-recheck.jpg) for coverage and limitations.
-All new fixtures were cleaned up and the existing demo owner account was retained.
-
-Live notifications and comments supersede the earlier manual lookup walkthrough. The earlier browser reports are historical evidence for that original version.
-
-## Current live-notification verification — 7 October 2026
-
-The live-notification version was deployed and verified on 7 October 2026. See
-[the latest browser evidence](../evidence/live-feature-browser.json), including
-two-session push checks and comment/status workflows.
+The 15 October checks passed all 18 live integration checks twice and verified real browser sign-in, creation, updates, comments and GraphQL reads. Current evidence is linked from the verification document. Older evidence copied from the Gen1 project describes earlier deployments.
