@@ -6,8 +6,8 @@ function jwtVerifier() {
   return verifier;
 }
 function createHandler(verify = token => jwtVerifier().verify(token)) {
-  console.log("Event object:", JSON.stringify(event, null, 2));
   return async event => {
+    console.log("Event object:" + JSON.stringify(event));
     const websocket = event.requestContext?.routeKey === '$connect';
     const raw = event.authorizationToken || event.headers?.Authorization || event.headers?.authorization || (websocket ? event.queryStringParameters?.token : '');
     const token = raw?.replace(/^Bearer\s+/i, '');
