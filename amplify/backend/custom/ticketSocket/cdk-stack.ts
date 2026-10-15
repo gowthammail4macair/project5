@@ -3,7 +3,6 @@ import * as AmplifyHelpers from '@aws-amplify/cli-extensibility-helper';
 import { Construct } from 'constructs';
 import { CfnApi, CfnAuthorizer, CfnIntegration, CfnRoute, CfnStage } from 'aws-cdk-lib/aws-apigatewayv2';
 import { CfnPermission, CfnEventSourceMapping } from 'aws-cdk-lib/aws-lambda';
-import { CfnPolicy } from 'aws-cdk-lib/aws-iam';
 import { Table, AttributeType, BillingMode } from 'aws-cdk-lib/aws-dynamodb';
 import { CfnUserPoolGroup } from 'aws-cdk-lib/aws-cognito';
 
@@ -24,21 +23,14 @@ export class cdkStack extends cdk.Stack {
     const authorizerArn = cdk.Fn.ref(dependencies.function.ticketAuthorizer.Arn);
     const apiId = cdk.Fn.ref(dependencies.api.supportGraphql.GraphQLAPIIdOutput);
     const streamArn = cdk.Fn.importValue(cdk.Fn.join(':', [apiId, 'GetAtt:TicketTable:StreamArn']));
-    const streamPolicy = new CfnPolicy(this, 'TicketStreamPolicy', {
-      policyName: 'ticket-stream-notifications',
-      roles: [cdk.Fn.ref(dependencies.function.ticketSocketHandler.LambdaExecutionRole)],
-      policyDocument: { Version: '2012-10-17', Statement: [{ Effect: 'Allow',
-        Action: ['dynamodb:DescribeStream','dynamodb:GetRecords','dynamodb:GetShardIterator'], Resource: streamArn }] }
-    });
     const mapping = new CfnEventSourceMapping(this, 'TicketNotifications', {
       functionName: handlerArn, eventSourceArn: streamArn, startingPosition: 'LATEST', batchSize: 10,
       bisectBatchOnFunctionError: true, maximumRetryAttempts: 3, maximumRecordAgeInSeconds: 3600
     });
-    mapping.addDependency(streamPolicy);
     new CfnUserPoolGroup(this, 'Agents', { userPoolId: poolId, groupName: 'Agents' });
     new Table(this, 'Connections', { tableName: cdk.Fn.join('', ['Connections-', poolId]),
       partitionKey: { name: 'connectionId', type: AttributeType.STRING }, billingMode: BillingMode.PAY_PER_REQUEST,
-      timeToLiveAttribute: 'expiresAt', removalPolicy: cdk.RemovalPolicy.RETAIN });
+      timeToLiveAttribute: 'expiresAt', deletionProtection: true, removalPolicy: cdk.RemovalPolicy.RETAIN });
     const api = new CfnApi(this, 'TicketSocket', { name: cdk.Fn.join('-', ['ticket-socket', cdk.Fn.ref('env')]),
       protocolType: 'WEBSOCKET', routeSelectionExpression: '$request.body.action' });
     const uri = (arn: string) => cdk.Fn.join('', ['arn:', cdk.Aws.PARTITION, ':apigateway:', cdk.Aws.REGION, ':lambda:path/2015-03-31/functions/', arn, '/invocations']);

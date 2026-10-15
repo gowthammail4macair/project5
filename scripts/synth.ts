@@ -63,7 +63,12 @@ async function main() {
   assert.equal(routes.length, 4);
   assert.equal(socketResources.filter(r => r.Type === 'AWS::Lambda::EventSourceMapping').length, 1);
   assert.ok(JSON.stringify(socketResources).includes('GetAtt:TicketTable:StreamArn'));
-  assert.ok(JSON.stringify(socketResources).includes('dynamodb:GetRecords'));
+  const socketHandler = JSON.parse(readFileSync('amplify/backend/function/ticketSocketHandler/ticketSocketHandler-cloudformation-template.json', 'utf8'));
+  assert.equal(socketTemplate.Resources.TicketStreamPolicy, undefined);
+  assert.equal(socketHandler.Resources.TicketStreamPolicy, undefined);
+  const streamPolicies = socketHandler.Resources.LambdaExecutionRole.Properties.Policies.filter((p: any) => p.PolicyName === 'ticket-stream-notifications');
+  assert.equal(streamPolicies.length, 1);
+  assert.deepEqual(streamPolicies[0].PolicyDocument.Statement[0].Resource, { 'Fn::ImportValue': { 'Fn::Join': [':', [{ Ref: 'apisupportGraphqlGraphQLAPIIdOutput' }, 'GetAtt:TicketTable:StreamArn']] } });
   assert.deepEqual(body.paths['/tickets/{id}/comments'].post.security, [{ Cognito: [] }]);
   assert.ok(Object.values(auth.Resources).some((r: any) => r.Type === 'AWS::Cognito::UserPool'));
   // Verify the backend-config graph has no category-level dependency cycle.
