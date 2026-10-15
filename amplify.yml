@@ -1,12 +1,11 @@
 version: 1
-# Step 8 intentionally does not deploy. Replace backend commands only after the
-# reference QA adaptation and deployment plan have been reviewed.
+# C's backend is deployed separately. Hosting retrieves its existing outputs.
 backend:
   phases:
     build:
       commands:
-        - npm ci
-        - npm run validate
+        - npm ci --include=dev
+        - npx ampx generate outputs --app-id "$AWS_APP_ID" --branch "$AWS_BRANCH"
 frontend:
   phases:
     build:
