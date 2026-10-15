@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-15T04:10:40.861Z",
+  "backend": {
+    "appId": "d1zija7gqlw461",
+    "envName": "pftest",
+    "stackName": "amplify-supportgenone-pftest-eb70f"
+  },
+  "auth": {
+    "aws_region": "ap-south-1",
+    "user_pool_id": "ap-south-1_zgT2JWoBE",
+    "user_pool_client_id": "6ugasqqj1n74lb521orpj047pd"
+  },
+  "graphqlApiId": "yfs4rx4ynvgulalyky2k3zfrxi",
+  "graphqlEndpoint": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql",
+  "dataSources": [
+    {
+      "name": "NONE_DS",
+      "type": "NONE"
+    },
+    {
+      "name": "TicketTable",
+      "type": "AMAZON_DYNAMODB",
+      "table": "Ticket-yfs4rx4ynvgulalyky2k3zfrxi-pftest"
+    },
+    {
+      "name": "TicketWorkflowLambdaDataSource",
+      "type": "AWS_LAMBDA",
+      "lambda": "arn:aws:lambda:ap-south-1:112097210422:function:ticketWorkflow-pftest"
+    }
+  ],
+  "checkedLambdaFunctions": [
+    "ticketRest-pftest",
+    "ticketWorkflow-pftest",
+    "ticketSocketHandler-pftest",
+    "ticketAuthorizer-pftest"
+  ],
+  "tables": [
+    "Ticket-yfs4rx4ynvgulalyky2k3zfrxi-pftest",
+    "Connections-ap-south-1_zgT2JWoBE"
+  ]
+}

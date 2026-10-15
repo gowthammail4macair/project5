@@ -1,25 +1,35 @@
 {
-  "stack": "support-d1zija7gqlw461-frontend",
+  "stack": "support-d1zija7gqlw461pftest-frontend",
   "region": "ap-south-1",
-  "assetsBucket": "support-d1zija7gqlw461-assets-112097210422",
-  "websiteBucket": "support-d1zija7gqlw461-website-112097210422",
-  "websiteUrl": "http://support-d1zija7gqlw461-website-112097210422.s3-website.ap-south-1.amazonaws.com",
-  "url": "https://d2i2kf1hg91937.cloudfront.net",
-  "distributionId": "E1KMLNKNIT86GN",
+  "assetsBucket": "support-d1zija7gqlw461pftest-assets-112097210422",
+  "websiteBucket": "support-d1zija7gqlw461pftest-website-112097210422",
+  "websiteUrl": "http://support-d1zija7gqlw461pftest-website-112097210422.s3-website.ap-south-1.amazonaws.com",
+  "url": "https://d1k425rlhrn2ss.cloudfront.net",
+  "distributionId": "E20G3GY95I9L2T",
   "status": "published",
-  "timestamp": "2026-10-07T08:27:57.576Z",
-  "sourceSha": "846ae9098428a7777fb4739ea23088ac27da7d88",
+  "timestamp": "2026-10-15T04:11:33.338Z",
+  "sourceSha": "eb404181a957c64c157d011fd067bc2763ca389a",
   "build": {
     "project": "amplify-gen1-fullstack",
+    "environment": "pftest",
+    "backend": {
+      "appId": "d1zija7gqlw461",
+      "envName": "pftest",
+      "stackName": "amplify-supportgenone-pftest-eb70f"
+    },
+    "tables": {
+      "tickets": "Ticket-yfs4rx4ynvgulalyky2k3zfrxi-pftest",
+      "connections": "Connections-ap-south-1_zgT2JWoBE"
+    },
     "configSource": "amplify_outputs.json",
-    "sourceSha": "846ae9098428a7777fb4739ea23088ac27da7d88",
-    "builtAt": "2026-10-07T08:27:50.014Z",
-    "frontendLabel": "Amplify Gen 1",
+    "sourceSha": "eb404181a957c64c157d011fd067bc2763ca389a",
+    "builtAt": "2026-10-15T04:11:27.372Z",
+    "frontendLabel": "Gen 1 · B (pftest)",
     "assets": [
       {
-        "path": "assets/app-e39537a2cbfc.js",
-        "sha256": "e39537a2cbfc960754f82e3e490fec8f0fdfb4e757ef960c7e91940e8d327e87",
-        "bytes": 108318
+        "path": "assets/app-c2fe11f8dc69.js",
+        "sha256": "c2fe11f8dc69bd77f47bb91740c86c1e3f1f0a0b9b80931ef0714f22231bf024",
+        "bytes": 109123
       },
       {
         "path": "assets/style-861d63dccec6.css",
@@ -28,19 +38,19 @@
       },
       {
         "path": "index.html",
-        "sha256": "e78de94354af5a126a55795b3e474777605226fc24db66e804f0234d7622a0a7",
-        "bytes": 8843
+        "sha256": "60245943e99710f29f542fc2ac3535eddba465cfafe520a0426c2e23e1d94329",
+        "bytes": 8928
       }
     ],
     "auth": {
-      "poolId": "ap-south-1_5Q6nrDXqS",
-      "clientId": "5q329vugqps0dl8lcil9gs504e",
+      "poolId": "ap-south-1_zgT2JWoBE",
+      "clientId": "6ugasqqj1n74lb521orpj047pd",
       "region": "ap-south-1"
     },
     "api": {
-      "rest": "https://iu6zhvysy7.execute-api.ap-south-1.amazonaws.com/dev",
-      "graphql": "https://zw4vheuavfdzfkaugphptnr22y.appsync-api.ap-south-1.amazonaws.com/graphql",
-      "websocket": "wss://b36pvu2da7.execute-api.ap-south-1.amazonaws.com/dev"
+      "rest": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest",
+      "graphql": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql",
+      "websocket": "wss://a61vb7pyxd.execute-api.ap-south-1.amazonaws.com/pftest"
     }
   }
 }

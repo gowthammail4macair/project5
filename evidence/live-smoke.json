@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-07T17:24:53.002Z",
+  "timestamp": "2026-10-15T04:11:07.789Z",
   "scope": "Live AWS HTTPS, Cognito SRP and WebSocket integration",
   "checks": [
     {
@@ -19,6 +19,10 @@
       "status": "passed"
     },
     {
+      "name": "B rejects its Cognito token at the original A GraphQL API",
+      "status": "passed"
+    },
+    {
       "name": "REST owner read/update and cross-owner denial",
       "status": "passed"
     },
@@ -32,6 +36,10 @@
     },
     {
       "name": "AppSync generated create/update resolvers write shared DynamoDB",
+      "status": "passed"
+    },
+    {
+      "name": "REST and GraphQL records exist in B physical DynamoDB table",
       "status": "passed"
     },
     {
@@ -84,43 +92,43 @@
     ],
     "socketsClosed": 3,
     "ticketIds": [
-      "11ba2ace-97e7-4bea-b36a-5bed0cc10f3f",
-      "b86cb180-897b-4d98-bc9e-cb9c653dbee8",
-      "830f33a5-da47-4156-b20e-07ab889ab203",
-      "25431845-be41-485b-a96a-a01e681af021",
-      "b90cf35e-b11b-47e9-b134-82caa26b1c03",
-      "61b568a7-e2ac-4d24-8aaa-69e50bb6c10c"
+      "99a308b8-a29d-485e-956f-1fa8784e289d",
+      "0f37f455-c385-4813-9097-c5c33b263e50",
+      "08567333-47e5-46f8-b71d-84796bd5a56a",
+      "4251b431-7e31-4bb4-9322-338e697209c1",
+      "befd546f-484b-4671-b671-ed0bd7a8dc11",
+      "9da057c4-e1a9-4ae6-8a8a-26f43eb6eb1e"
     ],
     "ticketResults": [
       {
-        "id": "11ba2ace-97e7-4bea-b36a-5bed0cc10f3f",
+        "id": "99a308b8-a29d-485e-956f-1fa8784e289d",
         "status": 404
       },
       {
-        "id": "b86cb180-897b-4d98-bc9e-cb9c653dbee8",
+        "id": "0f37f455-c385-4813-9097-c5c33b263e50",
         "status": 404
       },
       {
-        "id": "830f33a5-da47-4156-b20e-07ab889ab203",
+        "id": "08567333-47e5-46f8-b71d-84796bd5a56a",
         "status": 200
       },
       {
-        "id": "25431845-be41-485b-a96a-a01e681af021",
+        "id": "4251b431-7e31-4bb4-9322-338e697209c1",
         "status": 200
       },
       {
-        "id": "b90cf35e-b11b-47e9-b134-82caa26b1c03",
+        "id": "befd546f-484b-4671-b671-ed0bd7a8dc11",
         "status": 200
       },
       {
-        "id": "61b568a7-e2ac-4d24-8aaa-69e50bb6c10c",
+        "id": "9da057c4-e1a9-4ae6-8a8a-26f43eb6eb1e",
         "status": 200
       }
     ]
   },
   "endpoints": {
-    "rest": "https://iu6zhvysy7.execute-api.ap-south-1.amazonaws.com/dev",
-    "graphql": "https://zw4vheuavfdzfkaugphptnr22y.appsync-api.ap-south-1.amazonaws.com/graphql",
-    "websocket": "wss://b36pvu2da7.execute-api.ap-south-1.amazonaws.com/dev"
+    "rest": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest",
+    "graphql": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql",
+    "websocket": "wss://a61vb7pyxd.execute-api.ap-south-1.amazonaws.com/pftest"
   }
 }

@@ -1,6 +1,7 @@
 # B / pftest frontend
 
-B has separate S3/CloudFront hosting. Its public URL is recorded in
+B is live at https://d1k425rlhrn2ss.cloudfront.net with separate S3/CloudFront hosting.
+Its public configuration is recorded in
 [`frontend/hosting.json`](../frontend/hosting.json). The original Gen1 A site
 at https://d2i2kf1hg91937.cloudfront.net is preserved. C's main site continues
 to use its own APIs with the intended shared B reference state during QA.
@@ -64,3 +65,23 @@ See `evidence/backend-wiring.json`, `evidence/live-smoke.json`,
 `evidence/frontend-hosting-checks.json` and `evidence/b-frontend-verification.json`
 for the completed deployment checks. Browser evidence is recorded separately
 without credentials or JWTs. Test credentials are never committed.
+
+Verification completed on 15 October 2026:
+
+- 39 local/CI tests, TypeScript checking and Gen1 synthesis passed.
+- 20 live AWS checks passed, including physical B DynamoDB reads after API writes.
+- 15 hosted browser checks passed, including two-session push and Agent/customer separation.
+- Five hosting checks passed: all three asset hashes, HTTPS redirect and private S3 access.
+- A and C published manifests and B native resource/table/stream identities were preserved.
+- B remains the single enabled Ticket stream consumer.
+
+Published frontend source: `eb404181a957c64c157d011fd067bc2763ca389a`.
+[Successful GitHub validation](https://github.com/gowthammail4macair/project5/actions/runs/38680220993).
+The subsequent evidence commit does not change the published application source.
+
+The live CORS repair used a reviewed CloudFormation change set on B's existing
+`functionticketRest` nested stack. The only resource change was the existing
+`ticketRest-pftest` Lambda's environment, with replacement disabled. The committed
+Gen1 template has the same allowlist. No auth, API or table replacement occurred.
+
+![Verified hosted B workspace](../evidence/b-frontend-browser.png)

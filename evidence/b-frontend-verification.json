@@ -1,0 +1,110 @@
+{
+  "status": "passed",
+  "timestamp": "2026-10-15T04:15:42.875Z",
+  "hostedUrl": "https://d1k425rlhrn2ss.cloudfront.net",
+  "deployedSourceSha": "eb404181a957c64c157d011fd067bc2763ca389a",
+  "checks": [
+    {
+      "name": "Hosted B manifest matches deployed source and environment",
+      "status": "passed"
+    },
+    {
+      "name": "A published manifest preserved",
+      "status": "passed"
+    },
+    {
+      "name": "C published manifest preserved",
+      "status": "passed"
+    },
+    {
+      "name": "All B native root resources retain their physical identities",
+      "status": "passed"
+    },
+    {
+      "name": "Ticket physical table and stream preserved",
+      "status": "passed"
+    },
+    {
+      "name": "Connections physical table and stream preserved",
+      "status": "passed"
+    },
+    {
+      "name": "B CORS contains B hosting origin and localhost only",
+      "status": "passed"
+    },
+    {
+      "name": "REST preflight https://d1k425rlhrn2ss.cloudfront.net",
+      "status": "passed"
+    },
+    {
+      "name": "REST preflight https://d2i2kf1hg91937.cloudfront.net",
+      "status": "passed"
+    },
+    {
+      "name": "REST preflight https://unlisted.example.invalid",
+      "status": "passed"
+    },
+    {
+      "name": "B is the single active Ticket stream consumer",
+      "status": "passed"
+    },
+    {
+      "name": "20 live checks and complete temporary test cleanup",
+      "status": "passed"
+    }
+  ],
+  "sitesPreserved": {
+    "A": {
+      "url": "https://d2i2kf1hg91937.cloudfront.net",
+      "sourceSha": "18db9f37b730428aa157d0657c9822ad89199a4b",
+      "auth": {
+        "poolId": "ap-south-1_5Q6nrDXqS",
+        "clientId": "5q329vugqps0dl8lcil9gs504e",
+        "region": "ap-south-1"
+      },
+      "api": {
+        "rest": "https://p8zk05xh0j.execute-api.ap-south-1.amazonaws.com/main",
+        "graphql": "https://ufhokyvs3jcz5drur2mvz5arxe.appsync-api.ap-south-1.amazonaws.com/graphql",
+        "websocket": "wss://0c4yk7t1lk.execute-api.ap-south-1.amazonaws.com/main"
+      }
+    },
+    "C": {
+      "url": "https://main.d3bsim6mrnq854.amplifyapp.com",
+      "sourceSha": "aa81be8e731db9665dd4311fbf24ea01097ef48f",
+      "auth": {
+        "poolId": "ap-south-1_zgT2JWoBE",
+        "clientId": "6ugasqqj1n74lb521orpj047pd",
+        "region": "ap-south-1"
+      },
+      "api": {
+        "rest": "https://jwf4l5ykwb.execute-api.ap-south-1.amazonaws.com/main",
+        "graphql": "https://fmqphxy3vzawjbgy5gpvta42fq.appsync-api.ap-south-1.amazonaws.com/graphql",
+        "websocket": "wss://tuw5ja3x1i.execute-api.ap-south-1.amazonaws.com/main"
+      }
+    }
+  },
+  "streamConsumers": [
+    {
+      "function": "arn:aws:lambda:ap-south-1:112097210422:function:amplify-d3bsim6mrnq854-ma-project5ticketSocketHand-tdisSVB047cu",
+      "state": "Disabled"
+    },
+    {
+      "function": "arn:aws:lambda:ap-south-1:112097210422:function:ticketSocketHandler-pftest",
+      "state": "Enabled"
+    }
+  ],
+  "liveChecks": 20,
+  "browserChecks": 15,
+  "browserCleanup": {
+    "status": "passed",
+    "usersDeleted": 2,
+    "ticketsDeleted": 3,
+    "timestamp": "2026-10-15T04:17:19.706Z"
+  },
+  "localAndCITests": 39,
+  "ci": {
+    "url": "https://github.com/gowthammail4macair/project5/actions/runs/38680220993",
+    "conclusion": "success",
+    "sourceSha": "eb404181a957c64c157d011fd067bc2763ca389a"
+  }
+}

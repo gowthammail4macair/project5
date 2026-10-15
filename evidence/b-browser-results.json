@@ -1,0 +1,146 @@
+{
+  "status": "passed",
+  "hostedUrl": "https://d1k425rlhrn2ss.cloudfront.net/",
+  "checks": [
+    "Hosted B sign-in and automatic WebSocket connection",
+    "Hosted REST creation and rendered ticket",
+    "Second browser session reads B REST ticket",
+    "Status update streams automatically to a second hosted browser",
+    "Persisted comment appears in both hosted browsers through live push",
+    "Hosted B GraphQL reads B REST write",
+    "Hosted GraphQL custom Lambda summary",
+    "Custom GraphQL close streams to a second hosted browser",
+    "Hosted GraphQL creation streams to a second hosted browser",
+    "Hosted GraphQL personal queue includes REST and GraphQL tickets",
+    "Hosted WebSocket pause/resume and resync",
+    "Browser network stays on B endpoints with no page errors",
+    "Agent signs in with B Cognito and creates an owned GraphQL ticket",
+    "Hosted custom-authorized Agent queue excludes customer records",
+    "Hosted customer queue excludes the other Agent ticket"
+  ],
+  "ticketIds": [
+    "de88532a-69a8-401e-b3ae-9a8fd998f5e4",
+    "815e3927-0301-46d0-aaaf-25bb26326d2f",
+    "bd72be43-e8dd-4f21-9c84-59e700a46d3a"
+  ],
+  "network": [
+    {
+      "method": "POST",
+      "url": "https://cognito-idp.ap-south-1.amazonaws.com/"
+    },
+    {
+      "method": "POST",
+      "url": "https://cognito-idp.ap-south-1.amazonaws.com/"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets"
+    },
+    {
+      "method": "WEBSOCKET",
+      "url": "wss://a61vb7pyxd.execute-api.ap-south-1.amazonaws.com/pftest"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets"
+    },
+    {
+      "method": "POST",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets"
+    },
+    {
+      "method": "PATCH",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets/de88532a-69a8-401e-b3ae-9a8fd998f5e4"
+    },
+    {
+      "method": "POST",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets/de88532a-69a8-401e-b3ae-9a8fd998f5e4/comments"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets/de88532a-69a8-401e-b3ae-9a8fd998f5e4/comments"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets/de88532a-69a8-401e-b3ae-9a8fd998f5e4/comments"
+    },
+    {
+      "method": "POST",
+      "url": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql"
+    },
+    {
+      "method": "POST",
+      "url": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql"
+    },
+    {
+      "method": "POST",
+      "url": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql"
+    },
+    {
+      "method": "POST",
+      "url": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql"
+    },
+    {
+      "method": "POST",
+      "url": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets/815e3927-0301-46d0-aaaf-25bb26326d2f/comments"
+    },
+    {
+      "method": "WEBSOCKET",
+      "url": "wss://a61vb7pyxd.execute-api.ap-south-1.amazonaws.com/pftest"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets/815e3927-0301-46d0-aaaf-25bb26326d2f/comments"
+    },
+    {
+      "method": "POST",
+      "url": "https://cognito-idp.ap-south-1.amazonaws.com/"
+    },
+    {
+      "method": "POST",
+      "url": "https://cognito-idp.ap-south-1.amazonaws.com/"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets"
+    },
+    {
+      "method": "POST",
+      "url": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets/bd72be43-e8dd-4f21-9c84-59e700a46d3a/comments"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/admin/tickets"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets/bd72be43-e8dd-4f21-9c84-59e700a46d3a/comments"
+    },
+    {
+      "method": "POST",
+      "url": "https://vtesx745dvhnhnrx74xr7anch4.appsync-api.ap-south-1.amazonaws.com/graphql"
+    },
+    {
+      "method": "GET",
+      "url": "https://5pgt9rnw3e.execute-api.ap-south-1.amazonaws.com/pftest/tickets/815e3927-0301-46d0-aaaf-25bb26326d2f/comments"
+    }
+  ],
+  "pageErrors": [],
+  "timestamp": "2026-10-15T04:16:15.870Z"
+}
