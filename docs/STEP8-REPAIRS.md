@@ -66,6 +66,14 @@ The new `scripts/patch-amplify-import.cjs` runs after install and is bounded to 
 
 ## Verification limits
 
-Local checks use Node 24.16.0 with Lambda/build target Node 22. The runbook's Node 22 CI/runtime checks remain necessary. Live work during this review was limited to read-only descriptions of B's two tables and KMS key. No AWS stack/resource update, new pool/table, ownership movement, unlock, hosting publish or Git push was executed.
+Local checks for that review used Node 24.16.0 with Lambda/build target Node 22. Live work during that review was limited to read-only descriptions of B's two tables and KMS key. No AWS stack/resource update, new pool/table, ownership movement, unlock, hosting publish or Git push was executed.
+
+## 15 October follow-up: clean-install lockfile repair
+
+The reported `npm ci` failure was reproduced on Node 22.22.0 with npm 10.9.4 and npm 11.13.0. Switching npm versions alone did not fix it. The lockfile omitted four nested `@opentelemetry/core@2.0.0` entries required by Amplify's bundled OpenTelemetry dependencies. A package-lock-only install also restored four bundled CDK dependency entries (`jsonschema` and `semver` in each Amplify construct).
+
+The repair added eight entries without changing any existing locked package version or `package.json`. It was generated with `npm@11.13.0 install --package-lock-only --ignore-scripts --no-audit --no-fund`; normal installs should continue using `npm ci` with the repaired lockfile. The peer-dependency warnings remain separate from the corrected `EUSAGE` failure. Do not delete the lockfile or use `--force`/`--legacy-peer-deps` to bypass this failure.
+
+A full clean install with the user's Node 22.22.0/npm 10.9.4 completed, including the importer postinstall patch. TypeScript, all 40 current tests, reference synthesis for C (`d3bsim6mrnq854/main`) and frontend packaging from C's local outputs passed on Node 22. These are local installation/build checks, not a GitHub deployment or live browser QA result. Include the repaired `package-lock.json` in the next reviewed commit before CI uses it.
 
 The GraphQL transformer retains source warnings about root-field auth and possible owner reassignment on updates. Lambda/creator tests cover the reviewed behavior, but this checkpoint does not change the original GraphQL update-ownership policy or prove live authorization. Review that policy in the actual QA security matrix.

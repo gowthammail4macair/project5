@@ -22,7 +22,7 @@ async function main() {
   const csp=`default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' ${origins.join(' ')}; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests`;
   let html=fs.readFileSync('frontend/index.html','utf8').replaceAll('__PROJECT__',labels[name]).replace('__CSP__',csp).replace('__SCRIPT__','/'+jsPath).replace('__STYLE__','/'+cssPath);
   fs.writeFileSync('frontend/dist/index.html',html);
-  const manifest={project:name,configSource:file,sourceSha:process.env.GITHUB_SHA||null,builtAt:new Date().toISOString(),frontendLabel:labels[name],assets:[{path:jsPath,sha256:hash(js),bytes:js.length},{path:cssPath,sha256:hash(css),bytes:css.length},{path:'index.html',sha256:hash(html),bytes:Buffer.byteLength(html)}],auth:config.auth,api:config.api};
+  const manifest={project:name,configSource:file,sourceSha:process.env.GITHUB_SHA||process.env.AWS_COMMIT_ID||null,builtAt:new Date().toISOString(),frontendLabel:labels[name],assets:[{path:jsPath,sha256:hash(js),bytes:js.length},{path:cssPath,sha256:hash(css),bytes:css.length},{path:'index.html',sha256:hash(html),bytes:Buffer.byteLength(html)}],auth:config.auth,api:config.api};
   fs.writeFileSync('frontend/dist/build.json',JSON.stringify(manifest,null,2)+'\n');console.log(JSON.stringify({status:'built',project:name,assets:manifest.assets,configSource:file},null,2));
 }
 main().catch(e=>{console.error(e.message);process.exitCode=1;});

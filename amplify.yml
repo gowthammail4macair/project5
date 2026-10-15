@@ -2,6 +2,10 @@ version: 1
 # C's backend is deployed separately. Hosting retrieves its existing outputs.
 backend:
   phases:
+    preBuild:
+      commands:
+        - nvm use 22
+        - npm install --global npm@11.13.0
     build:
       commands:
         - npm ci --include=dev

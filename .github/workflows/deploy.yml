@@ -1,5 +1,5 @@
-# Step 8 validation only. Reference QA and deployment are separate reviewed phases.
-name: Validate Project5 Gen2 baseline
+# Deployment stays off until PROJECT5_DEPLOY_ENABLED is explicitly set to true.
+name: Validate and deploy Project5
 on:
   push:
     branches: [main]
@@ -7,27 +7,27 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: project5-baseline-validation
+  group: project5-main-backend
   cancel-in-progress: false
+env:
+  CI: '1'
+  AWS_REGION: ${{ vars.AWS_REGION || 'ap-south-1' }}
+  GEN2_APP_ID: ${{ vars.GEN2_APP_ID || 'dprojectfivepreview' }}
+  GEN2_BRANCH: main
+  TEST_USER_POOL_ID: ${{ vars.TEST_USER_POOL_ID }}
+  TEST_WEB_CLIENT_ID: ${{ vars.TEST_WEB_CLIENT_ID }}
+  TEST_IDENTITY_POOL_ID: ${{ vars.TEST_IDENTITY_POOL_ID }}
+  TEST_AUTH_ROLE_ARN: ${{ vars.TEST_AUTH_ROLE_ARN }}
+  TEST_UNAUTH_ROLE_ARN: ${{ vars.TEST_UNAUTH_ROLE_ARN }}
+  TEST_CONNECTIONS_TABLE_ARN: ${{ vars.TEST_CONNECTIONS_TABLE_ARN }}
+  TEST_TICKET_STREAM_ARN: ${{ vars.TEST_TICKET_STREAM_ARN }}
+  TEST_SOURCE_WEBSOCKET_API_ID: ${{ vars.TEST_SOURCE_WEBSOCKET_API_ID }}
+  TEST_SOURCE_WEBSOCKET_STAGE: ${{ vars.TEST_SOURCE_WEBSOCKET_STAGE }}
+  PROJECT5_ALLOWED_ORIGINS: ${{ vars.PROJECT5_ALLOWED_ORIGINS || '["http://localhost:3000"]' }}
 jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      CI: '1'
-      AWS_REGION: ${{ vars.AWS_REGION || 'ap-south-1' }}
-      GEN2_APP_ID: ${{ vars.GEN2_APP_ID || 'dprojectfivepreview' }}
-      GEN2_BRANCH: main
-      TEST_USER_POOL_ID: ${{ vars.TEST_USER_POOL_ID }}
-      TEST_WEB_CLIENT_ID: ${{ vars.TEST_WEB_CLIENT_ID }}
-      TEST_IDENTITY_POOL_ID: ${{ vars.TEST_IDENTITY_POOL_ID }}
-      TEST_AUTH_ROLE_ARN: ${{ vars.TEST_AUTH_ROLE_ARN }}
-      TEST_UNAUTH_ROLE_ARN: ${{ vars.TEST_UNAUTH_ROLE_ARN }}
-      TEST_CONNECTIONS_TABLE_ARN: ${{ vars.TEST_CONNECTIONS_TABLE_ARN }}
-      TEST_TICKET_STREAM_ARN: ${{ vars.TEST_TICKET_STREAM_ARN }}
-      TEST_SOURCE_WEBSOCKET_API_ID: ${{ vars.TEST_SOURCE_WEBSOCKET_API_ID }}
-      TEST_SOURCE_WEBSOCKET_STAGE: ${{ vars.TEST_SOURCE_WEBSOCKET_STAGE }}
-      PROJECT5_ALLOWED_ORIGINS: ${{ vars.PROJECT5_ALLOWED_ORIGINS || '["http://localhost:3000"]' }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -36,11 +36,45 @@ jobs:
           cache: npm
       - run: npm install --global npm@11.13.0
       - run: npm ci
-      - name: Validate the managed Gen2 baseline
+      - name: Validate the reference QA backend
         run: npm run validate
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: project5-baseline-validation
+          name: project5-reference-validation
           path: evidence/synthesis.json
           retention-days: 14
+  deploy:
+    needs: validate
+    if: ${{ github.ref == 'refs/heads/main' && vars.PROJECT5_DEPLOY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      PROJECT5_DEPLOY_ROLE_ARN: ${{ vars.PROJECT5_DEPLOY_ROLE_ARN }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Check deployment settings
+        run: node scripts/project5-deploy-check.cjs config
+      - run: npm install --global npm@11.13.0
+      - run: npm ci
+      - name: Authenticate to AWS with GitHub OIDC
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd
+        with:
+          role-to-assume: ${{ vars.PROJECT5_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          allowed-account-ids: '112097210422'
+          role-session-name: project5-${{ github.run_id }}
+          role-duration-seconds: 3600
+      - name: Verify C app and branch in AWS
+        run: node scripts/project5-deploy-check.cjs live
+      - name: Deploy C main backend
+        run: npx ampx pipeline-deploy --app-id "$GEN2_APP_ID" --branch "$GEN2_BRANCH"
+      - name: Publish C frontend and verify the deployed commit
+        run: node scripts/project5-hosting-release.cjs
